@@ -35,3 +35,5 @@
         </div>
     </nav>
 </header>
+ @if (Auth::check())
+                        <li>{!! link_to_route('users.index', 'Users') !!}</li>
