@@ -1,26 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+    use Illuminate\Http\Request;
 
-namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use App\User; // 追加
-use App\Micropost;
+    namespace App\Http\Controllers;
+    use Illuminate\Http\Request;
+    use App\User; // 追加
+    use App\Micropost;
 
-class UsersController extends Controller
+Class UsersController extends Controller
 {
- public function index()
+    
+    public function index()
     {
         $users = User::paginate(10);
         return view('users.index', [
         'users' => $users,
         ]);
-}
+    }
 
 
-  public function show($id)
+    public function show($id)
     {
         $user = User::find($id);
         $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
@@ -33,7 +34,9 @@ class UsersController extends Controller
         $data += $this->counts($user);
 
         return view('users.show', $data);
+        
     }
+    
    public function followings($id)
     {
         $user = User::find($id);
@@ -64,4 +67,16 @@ class UsersController extends Controller
         return view('users.followers', $data);
     }
     
+    public function favorites($id)
+    {
+        $user = User::find($id);
+        $being_favorites = $user->favorites()->paginate(10);
+        $data = [
+        'user' => $user,
+        'microposts' => $being_favorites,
+        ];
+        $data += $this->counts($user);
+        return view('users.being_favorites', $data);
+    }
+   
 }
